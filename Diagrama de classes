@@ -1,0 +1,162 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Interface
+interface Cadastravel {
+    +registrar(): void
+}
+
+' Classe Abstrata
+abstract class Dispositivo {
+    -id: int
+    -local: String
+    --
+    +getId(): int
+    +getLocal(): String
+    +setLocal(local: String): void
+    +status(): void
+    +registrar(): void
+}
+
+' Subclasse de Dispositivo
+class Tipo extends Dispositivo {
+    -equipamentos: String
+    -status: String
+    --
+    +getEquipamentos(): String
+    +getStatus(): String
+    +setEquipamentos(equipamentos: String): void
+    +setStatus(status: String): void
+    +status(): void
+    +registrar(): void
+}
+
+' Cadastro
+class Cadastro {
+    -login: String
+    -senha: String
+    -dispositivos: ArrayList<Dispositivo>
+    --
+    +getLogin(): String
+    +getSenha(): String
+    +setLogin(String): void
+    +setSenha(String): void
+    +adicionarDispositivo(Dispositivo): void
+    +getDispositivos(): ArrayList<Dispositivo>
+}
+
+' Plano de Segurança
+class PlanoSeguranca {
+    -nome: String
+    -descricao: String
+    -dispositivos: ArrayList<Dispositivo>
+    --
+    +getNome(): String
+    +getDescricao(): String
+    +setNome(String): void
+    +setDescricao(String): void
+    +adicionarDispositivo(Dispositivo): void
+    +getDispositivos(): ArrayList<Dispositivo>
+}
+
+' Usuário
+class Usuario {
+    -nome: String
+    -nivelAcesso: int
+    --
+    +getNome(): String
+    +getNivelAcesso(): int
+    +setNome(String): void
+    +setNivelAcesso(int): void
+}
+
+' Subclasse Administrador
+class Administrador extends Usuario {
+    -areaResponsavel: String
+    --
+    +getAreaResponsavel(): String
+    +setAreaResponsavel(String): void
+    +emitirRelatorio(): void
+}
+
+' Monitoramento
+class Monitoramento {
+    -data: String
+    -status: String
+    --
+    +getData(): String
+    +getStatus(): String
+    +setData(String): void
+    +setStatus(String): void
+}
+
+' Manutenção
+class Manutencao {
+    -descricao: String
+    -data: String
+    --
+    +getDescricao(): String
+    +getData(): String
+    +setDescricao(String): void
+    +setData(String): void
+}
+
+' Evento
+class LogEvento {
+    -dataHora: String
+    -evento: String
+    --
+    +getDataHora(): String
+    +getEvento(): String
+    +setDataHora(String): void
+    +setEvento(String): void
+}
+
+' Histórico
+class Historico {
+    -eventos: ArrayList<LogEvento>
+    -usuario: Usuario
+    --
+    +getEventos(): ArrayList<LogEvento>
+    +getUsuario(): Usuario
+    +setEventos(ArrayList<LogEvento>): void
+    +setUsuario(Usuario): void
+    +adicionarEvento(LogEvento): void
+}
+
+' Notificação
+class Notificacao {
+    -mensagem: String
+    -tipo: String
+    --
+    +getMensagem(): String
+    +getTipo(): String
+    +setMensagem(String): void
+    +setTipo(String): void
+}
+
+' Classe Principal
+class Main {
+    --
+    +main(String[]): void
+}
+
+' RELACIONAMENTOS
+
+Dispositivo <|.. Cadastravel
+
+Cadastro --> "0..*" Dispositivo : gerencia >
+PlanoSeguranca --> "0..*" Dispositivo : agrupa >
+Historico --> "0..*" LogEvento : contém >
+Historico --> Usuario : pertence a >
+Manutencao --> Dispositivo : manutenção de >
+Monitoramento --> Dispositivo : monitora >
+Notificacao --> Usuario : enviada a >
+Administrador --> PlanoSeguranca : supervisiona >
+Main --> Cadastro : usa >
+Main --> PlanoSeguranca : usa >
+Main --> Usuario : acessa >
+Main --> Notificacao : envia >
+Main --> Historico : consulta >
+
+@enduml
