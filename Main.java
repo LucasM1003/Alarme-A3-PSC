@@ -1,4 +1,3 @@
-// Classe Main com interações completas (agora com editar/excluir tudo)
 import java.util.*;
 import java.time.LocalDateTime;
 
